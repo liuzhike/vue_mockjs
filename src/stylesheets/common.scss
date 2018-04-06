@@ -1,0 +1,133 @@
+//常用颜色
+$green: #92c659;
+$colorEEE: #eee;
+$color333: #333;
+$color999: #999;
+$colorFFF: #fff;
+
+
+/**
+ * [px2em description]
+ * @param  {String} $px              设计图上的px值
+ * @param  {String} $base-font-size: 16px          基础fontSize大小
+ * @return {String}                  计算出的rem值
+ */
+@function px2rem($px, $base-font-size: 72px) {
+    @if (unitless($px)) {
+        @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels for you";
+        @return px2em($px + 0px); // That may fail.
+    } @else if (unit($px) == rem) {
+        @return $px;
+    }
+    @return ($px / $base-font-size) * 1rem;
+}
+
+@mixin clearfix{
+    zoom: 1;
+    &:before{
+        content:"";
+        display: table;
+    }
+    &:after{
+        content:"";
+        display: table;
+        clear:both;
+        overflow: hidden;
+    }
+}
+.clearfix{
+  zoom: 1;
+  &:before{
+    content:"";
+    display: table;
+  }
+  &:after{
+    content:"";
+    display: table;
+    clear:both;
+    overflow: hidden;
+  }
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+/**
+ * 边线0.5像素
+ * @todo 都改为border来处理
+ * @param  {color} @color:c0c0c0  颜色值，默认为c0c0c0
+ * @param  {[type]} @horizontal:   top           横向位置,top、bottom
+ * @param  {[type]} @vertical:     left          纵向位置，left、right
+ * @param  {[type]} @width:        200%          宽度
+ * @param  {[type]} @height:       1px           高度
+ * @param  {[type]} @dir:          after         伪元素的值,after、before
+ * @param  {[type]} @borderRadius: 0             圆角
+ */
+@mixin half($color: c0c0c0, $horizontal: top, $vertical: left, $width: 200%, $height: 1px, $dir: after, $borderRadius: 0) {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    &:#{$dir} {
+        content: "";
+        position: absolute;
+        #{$vertical}: 0;
+        #{$horizontal}: 0;
+        background-color: $color;
+        transform-origin: $vertical $horizontal;
+        -webkit-transform-origin: $vertical $horizontal;
+        transform: scale(0.5);
+        -webkit-transform: scale(0.5);
+        height: $height;
+        width: $width;
+        border-radius: $borderRadius;
+        z-index: 2;
+
+    }
+
+}
+@mixin halfBottom($color: #eee) {
+    @include half($color, bottom, left, 200%, 1px, after);
+}
+@mixin halfTop($color: #eee) {
+    @include half($color, top, left, 200%, 1px, before);
+}
+@mixin halfLeft($color: #eee) {
+    @include half($color, top, left, 1px, 200%, before);
+}
+@mixin halfRight($color: #eee) {
+    @include half($color, top, right, 1px, 200%, after);
+}
+@mixin halfBorder($color: #eee, $borderRadius: 0) {
+    position: relative;
+    &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        border: 1px solid $color;
+        border-radius: $borderRadius;
+        transform: scale(0.5);
+        -webkit-transform: scale(0.5);
+        transform-origin: left top;
+        -webkit-transform-origin: left top;
+        z-index: 1;
+    }
+}
+
+/** 原价中增加删除线 */
+@mixin lineThrough($backgroundColor: #bfbfbf) {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        height: 1px;
+        background-color: $backgroundColor;
+        left: 2px;
+        width: 100%;
+        top: 45%;
+    }
+}
